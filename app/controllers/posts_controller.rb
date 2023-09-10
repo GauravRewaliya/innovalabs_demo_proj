@@ -1,13 +1,13 @@
 class PostsController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :check_user
-  before_action :set_post , only: [ :destroy,:update]
+  before_action :set_post , only: [ :destroy,:update , :edit]
   
   def index
     @posts = Post.all
     respond_to do |format|
       format.json { render json: @posts}
-      # format.html { render :index }
+      format.html { render :index }
     end
   end
 
@@ -21,7 +21,6 @@ class PostsController < ApplicationController
         else
           render json: {notice: "cant delete"}, status: :unprocessable_entity  
         end
-
     end
 
   end
@@ -29,16 +28,18 @@ class PostsController < ApplicationController
   def new
     @post = Post.new
   end
+  def edit
+  end
 
   def create
     @post = Post.new(post_params)
     respond_to do |format|
       if @post.save
         format.json { render json: { status: :created, post: @post} }
-        # format.html { redirect_to post_url(@post), notice: "Tech_stack was successfully created." }
+        format.html { redirect_to posts_path, notice: "Tech_stack was successfully created." }
       else
         format.json { render json: @post.errors, status: :unprocessable_entity }
-        # format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_entity }
       end
     end
   end
@@ -48,11 +49,11 @@ class PostsController < ApplicationController
     respond_to do |format|
       if !@post.blank? 
         if @post.update(post_params)
-            format.json { render json: { status: :updated, post: @post} }
-          # format.html { redirect_to post_url(@post), notice: "post was successfully updated." }
+          format.json { render json: { status: :updated, post: @post} }
+          format.html { redirect_to posts_path, notice: "post was successfully updated." }
         else
           format.json {render json: {post: @post.errors, status: :unprocessable_entity} } 
-          # format.html { render :edit, status: :unprocessable_entity }
+          format.html { render :edit, status: :unprocessable_entity }
         end
       else
         format.json { render json: {notice: "cant find the post"}, status: :unprocessable_entity  }

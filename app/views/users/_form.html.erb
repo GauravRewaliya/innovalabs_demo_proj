@@ -1,4 +1,13 @@
-<%= form_with(model: @user )do |form| %>
+<%= form_with(model: user ,url: custom_send_to)do |form| %>
+  <% if user.errors.any? %>
+    <div >
+      <ul>
+        <% user.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
     <div>
         <%= form.label :email %>
         <%= form.text_field :email %>

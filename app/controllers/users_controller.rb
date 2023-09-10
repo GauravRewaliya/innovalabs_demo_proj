@@ -14,11 +14,11 @@ class UsersController < ApplicationController
       respond_to do |format|
         if @user.save
           session[:user_id] = @user.id
-          # format.html { redirect_to posts_path, notice: "Logedin successfully " }
           format.json { render json: {user: @user ,session: session} ,status: 200}
+          format.html { redirect_to posts_path, notice: "Logedin successfully " }
         else
-          # format.html { render :new, status: :unprocessable_entity }
           format.json { render json: @user.errors, status: :unprocessable_entity }
+          format.html { render :register_view, notice: @user.errors  , status: :unprocessable_entity }
         end
       end
   end
@@ -28,10 +28,10 @@ class UsersController < ApplicationController
         if !@user.blank?
           session[:user_id] = @user.id
           format.json { render json: session,status: 200}
-          # format.html { redirect_to posts_path, notice: "Logedin successfully " }
+          format.html { redirect_to posts_path, notice: "Logedin successfully " }
         else
           format.json { render json: @user.errors, status: :unprocessable_entity }
-          # format.html { render :new, status: :unprocessable_entity }
+          format.html { render :login_view, notice: "somthing Wrong" , status: :unprocessable_entity }
         end
       end
   end
