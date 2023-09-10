@@ -12,17 +12,14 @@ class PostsController < ApplicationController
   end
 
   def destroy
-
     respond_to do |format|
-      # format.html { redirect_to posts_url, notice: "post was successfully destroyed." }
-      format.json
+        format.json
         if (!@post.blank? && @post.destroy )
           render json: {notice: "post was successfully destroyed"}
         else
           render json: {notice: "cant delete"}, status: :unprocessable_entity  
         end
     end
-
   end
 
   def new
@@ -80,5 +77,6 @@ class PostsController < ApplicationController
             format.html { redirect_to users_login_view_path , notice: "need to login" }
         end
       end
+      
     end
 end
